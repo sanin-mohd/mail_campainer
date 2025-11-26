@@ -104,10 +104,10 @@ class CampaignForm(forms.ModelForm):
             minimum_time = now + timedelta(hours=1)
             
             # Check if scheduled time is in the future
-            # if scheduled_time < now:
-            #     raise forms.ValidationError('Scheduled time must be in the future.')
-            # elif scheduled_time < minimum_time:
-            #     raise forms.ValidationError('Scheduled time must be at least 1 hour from now.')
+            if scheduled_time < now:
+                raise forms.ValidationError('Scheduled time must be in the future.')
+            elif scheduled_time < minimum_time:
+                raise forms.ValidationError('Scheduled time must be at least 1 hour from now.')
             
             # Check for conflicts with other scheduled campaigns
             time_buffer = timedelta(hours=1)
