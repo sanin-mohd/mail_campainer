@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Invitation</title>
+    <style>
+        body {
+            font-family: Georgia, serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+            border: 2px solid #d4af37;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 50px 30px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 32px;
+        }
+        .invitation-icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+        .content {
+            padding: 40px 30px;
+        }
+        .event-details {
+            background-color: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 25px 0;
+            border-left: 4px solid #d4af37;
+        }
+        .detail-item {
+            margin: 15px 0;
+            display: flex;
+            align-items: start;
+        }
+        .detail-icon {
+            font-size: 20px;
+            margin-right: 15px;
+            min-width: 25px;
+        }
+        .rsvp-button {
+            display: inline-block;
+            padding: 15px 50px;
+            background-color: #d4af37;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .agenda {
+            margin: 25px 0;
+        }
+        .agenda-item {
+            padding: 15px;
+            margin: 10px 0;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+        .agenda-time {
+            font-weight: bold;
+            color: #2a5298;
+        }
+        .footer {
+            background-color: #f8f9fa;
+            padding: 25px 30px;
+            text-align: center;
+            font-size: 13px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="invitation-icon">✉️</div>
+            <h1>You're Invited!</h1>
+            <p>Join us for an exclusive event</p>
+        </div>
+        
+        <div class="content">
+            <p>Dear {{ recipient.first_name }} {{ recipient.last_name }},</p>
+            
+            <p>We are delighted to invite you to our <strong>Annual User Conference 2025</strong>, where industry leaders and innovators come together to share insights, network, and explore the future of technology.</p>
+            
+            <div class="event-details">
+                <h3 style="margin-top: 0; color: #2a5298;">📅 Event Details</h3>
+                
+                <div class="detail-item">
+                    <span class="detail-icon">📆</span>
+                    <div>
+                        <strong>Date:</strong><br>
+                        Friday, December 15, 2025
+                    </div>
+                </div>
+                
+                <div class="detail-item">
+                    <span class="detail-icon">🕐</span>
+                    <div>
+                        <strong>Time:</strong><br>
+                        9:00 AM - 5:00 PM IST
+                    </div>
+                </div>
+                
+                <div class="detail-item">
+                    <span class="detail-icon">📍</span>
+                    <div>
+                        <strong>Venue:</strong><br>
+                        Grand Conference Center<br>
+                        123 Business District, Mumbai
+                    </div>
+                </div>
+                
+                <div class="detail-item">
+                    <span class="detail-icon">👥</span>
+                    <div>
+                        <strong>Capacity:</strong><br>
+                        Limited to 200 attendees
+                    </div>
+                </div>
+            </div>
+            
+            <center>
+                <a href="https://yourplatform.com/rsvp?email={{ recipient.email }}" class="rsvp-button">
+                    RSVP Now
+                </a>
+            </center>
+            
+            <div class="agenda">
+                <h3 style="color: #2a5298;">📋 Event Agenda</h3>
+                
+                <div class="agenda-item">
+                    <div class="agenda-time">9:00 AM - 10:00 AM</div>
+                    <div>Registration & Networking Breakfast</div>
+                </div>
+                
+                <div class="agenda-item">
+                    <div class="agenda-time">10:00 AM - 11:30 AM</div>
+                    <div>Keynote: The Future of Digital Transformation</div>
+                </div>
+                
+                <div class="agenda-item">
+                    <div class="agenda-time">11:30 AM - 1:00 PM</div>
+                    <div>Panel Discussion: Innovation in 2025</div>
+                </div>
+                
+                <div class="agenda-item">
+                    <div class="agenda-time">1:00 PM - 2:00 PM</div>
+                    <div>Networking Lunch</div>
+                </div>
+                
+                <div class="agenda-item">
+                    <div class="agenda-time">2:00 PM - 4:00 PM</div>
+                    <div>Breakout Sessions & Workshops</div>
+                </div>
+                
+                <div class="agenda-item">
+                    <div class="agenda-time">4:00 PM - 5:00 PM</div>
+                    <div>Closing Remarks & Networking Reception</div>
+                </div>
+            </div>
+            
+            <p><strong>What to Expect:</strong></p>
+            <ul>
+                <li>Inspiring keynotes from industry leaders</li>
+                <li>Interactive workshops and demos</li>
+                <li>Networking opportunities with peers</li>
+                <li>Lunch and refreshments included</li>
+                <li>Exclusive swag and giveaways</li>
+            </ul>
+            
+            <p>Please RSVP by <strong>December 1, 2025</strong> as space is limited.</p>
+            
+            <p>We look forward to seeing you there!</p>
+            
+            <p>Warm regards,<br>
+            <strong>The Events Team</strong></p>
+        </div>
+        
+        <div class="footer">
+            <p>© 2025 Your Platform. All rights reserved.</p>
+            <p>{{ recipient.email }}</p>
+            <p><a href="{{ unsubscribe_link }}">Unsubscribe</a> | <a href="#">View in Browser</a></p>
+        </div>
+    </div>
+</body>
+</html>

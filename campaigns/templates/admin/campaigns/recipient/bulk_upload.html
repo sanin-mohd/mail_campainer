@@ -1,0 +1,144 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block extrahead %}
+<style>
+    .upload-container {
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 30px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .upload-form {
+        margin-top: 30px;
+    }
+    .file-input-wrapper {
+        margin: 20px 0;
+        color: #036;
+    }
+    .submit-row {
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid #ddd;
+    }
+    .instructions {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 5px;
+        margin: 20px 0;
+    }
+    .instructions h3 {
+        margin-top: 0;
+        color: #2a2a2a;
+    }
+    .instructions ul {
+        margin: 10px 0;
+        padding-left: 20px;
+    }
+    .instructions li {
+        margin: 8px 0;
+        color: #a42d2d;
+    }
+    .sample-format {
+        background: white;
+        padding: 15px;
+        border: 1px solid #ddd;
+        color: #848484;
+        border-radius: 4px;
+        margin-top: 15px;
+        font-family: monospace;
+    }
+    .back-link {
+        display: inline-block;
+        margin-bottom: 20px;
+        color: #447e9b;
+        text-decoration: none;
+    }
+    .back-link:hover {
+        color: #036;
+    }
+    .messagelist{
+        color: #a42d2d;
+    }
+</style>
+{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}">Home</a>
+    &rsaquo; <a href="{% url 'admin:campaigns_recipient_changelist' %}">Recipients</a>
+    &rsaquo; Bulk Upload
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="upload-container">
+    <a href="{% url 'admin:campaigns_recipient_changelist' %}" class="back-link">← Back to Recipients</a>
+    
+    <h1>Bulk Upload Recipients</h1>
+    
+    {% if running_campaigns_count > 0 %}
+    <div class="messagelist" >
+        <div class="error" style="padding: 15px; margin: 20px 0; border-radius: 5px;">
+            <strong>⚠️ Warning: Cannot Upload Recipients</strong>
+            <p style="margin: 10px 0 0 0;">
+                {{ running_campaigns_count }} campaign(s) are currently in progress:
+            </p>
+            <ul style="margin: 10px 0; padding-left: 20px;">
+                {% for campaign in running_campaigns %}
+                <li><strong>{{ campaign.name }}</strong> - Status: In Progress</li>
+                {% endfor %}
+            </ul>
+            <p style="margin: 10px 0 0 0;">
+                Please wait until all campaigns complete before uploading new recipients.
+                This prevents data inconsistency during active campaigns.
+            </p>
+        </div>
+    </div>
+    {% endif %}
+    
+    <div class="instructions">
+        <h3>📋 Instructions:</h3>
+        <ul>
+            <li><strong>Supported formats:</strong> CSV (.csv) and Excel (.xlsx, .xls)</li>
+            <li><strong>Required columns:</strong> <code>email</code> (required), <code>name</code> (required)</li>
+            <li><strong>Email validation:</strong> Invalid emails will be automatically skipped</li>
+            <li><strong>Duplicates:</strong> Duplicate emails will be skipped automatically</li>
+            <li><strong>Performance:</strong> Can handle millions of rows efficiently using parallel processing</li>
+            <li><strong>Default status:</strong> All imported recipients will be marked as 'Subscribed'</li>
+            <li><strong style="color: #dc3545;">⚠️ Important:</strong> Cannot upload while campaigns are running (in_progress state)</li>
+        </ul>
+        
+        <h3>📄 Sample CSV Format:</h3>
+        <div class="sample-format">
+            name,email<br>
+            John Doe,john@example.com<br>
+            Jane Smith,jane@example.com<br>
+            Bob Johnson,bob@example.com
+        </div>
+    </div>
+    
+    <form method="post" enctype="multipart/form-data" class="upload-form"{% if running_campaigns_count > 0 %} style="opacity: 0.5; pointer-events: none;"{% endif %}>
+        {% csrf_token %}
+        
+        {% if form.errors %}
+        <div class="errors">
+            {{ form.errors }}
+        </div>
+        {% endif %}
+        
+        <div class="file-input-wrapper">
+            <label for="id_file"><strong>Select File:</strong></label>
+            {{ form.file }}
+            <p class="help" style="color: #036;">{{ form.file.help_text }}</p>
+        </div>
+        
+        <div class="submit-row">
+            <input type="submit" value="Upload Recipients" class="default" />
+            <a href="{% url 'admin:campaigns_recipient_changelist' %}" class="button cancel-link">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

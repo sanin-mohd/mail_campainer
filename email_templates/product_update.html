@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Update</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #e9ecef;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .header {
+            background-color: #0066cc;
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+        .version-badge {
+            display: inline-block;
+            background-color: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        .content {
+            padding: 30px;
+        }
+        .update-section {
+            margin: 25px 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #0066cc;
+        }
+        .update-section h3 {
+            margin-top: 0;
+            color: #0066cc;
+        }
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        .feature-list li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+        .feature-list li:before {
+            content: "🎉";
+            position: absolute;
+            left: 0;
+            font-size: 18px;
+        }
+        .bug-fix-list li:before {
+            content: "🐛";
+        }
+        .improvement-list li:before {
+            content: "⚡";
+        }
+        .cta-button {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: #0066cc;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        .note-box {
+            background-color: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .footer {
+            background-color: #f8f9fa;
+            padding: 20px 30px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Product Update</h1>
+            <div class="version-badge">Version 3.5.0</div>
+        </div>
+        
+        <div class="content">
+            <p>Hi {{ recipient.first_name }},</p>
+            
+            <p>We're excited to share the latest updates to our platform! This release includes new features, performance improvements, and bug fixes based on your valuable feedback.</p>
+            
+            <div class="update-section">
+                <h3>✨ New Features</h3>
+                <ul class="feature-list">
+                    <li><strong>Advanced Dashboard:</strong> Get real-time insights with our redesigned analytics dashboard featuring customizable widgets and data visualization.</li>
+                    <li><strong>Team Collaboration:</strong> Now you can collaborate with team members in real-time with shared workspaces and instant notifications.</li>
+                    <li><strong>Mobile App:</strong> Download our new mobile app for iOS and Android to access your account on the go.</li>
+                    <li><strong>Dark Mode:</strong> Reduce eye strain with our new dark mode option available in settings.</li>
+                    <li><strong>Export to Excel:</strong> Export your data directly to Excel format with one click.</li>
+                </ul>
+            </div>
+            
+            <div class="update-section">
+                <h3>⚡ Improvements</h3>
+                <ul class="feature-list improvement-list">
+                    <li><strong>Performance:</strong> 50% faster page load times across the platform</li>
+                    <li><strong>Search:</strong> Enhanced search functionality with filters and auto-suggestions</li>
+                    <li><strong>UI/UX:</strong> Cleaner interface with improved navigation</li>
+                    <li><strong>API:</strong> Updated API documentation with more examples</li>
+                    <li><strong>Notifications:</strong> Better notification management with customization options</li>
+                </ul>
+            </div>
+            
+            <div class="update-section">
+                <h3>🐛 Bug Fixes</h3>
+                <ul class="feature-list bug-fix-list">
+                    <li>Fixed: Login issues on Safari browser</li>
+                    <li>Fixed: Email notifications not sending for scheduled reports</li>
+                    <li>Fixed: Date picker showing incorrect timezone</li>
+                    <li>Fixed: CSV export formatting errors</li>
+                    <li>Fixed: Mobile responsive issues on iPad</li>
+                </ul>
+            </div>
+            
+            <div class="note-box">
+                <strong>📝 Note:</strong> This update will be automatically applied to your account. No action is required on your part. All your data and settings remain unchanged.
+            </div>
+            
+            <center>
+                <a href="https://yourplatform.com/changelog" class="cta-button">View Full Changelog</a>
+                <a href="https://yourplatform.com/features" class="cta-button" style="background-color: #28a745;">Try New Features</a>
+            </center>
+            
+            <p style="margin-top: 30px;">We're committed to continuously improving your experience. Have feedback or suggestions? We'd love to hear from you!</p>
+            
+            <p><a href="https://yourplatform.com/feedback">Share Your Feedback →</a></p>
+            
+            <p>Happy exploring!<br>
+            <strong>The Product Team</strong></p>
+        </div>
+        
+        <div class="footer">
+            <p>© 2025 Your Platform. All rights reserved.</p>
+            <p>{{ recipient.email }}</p>
+            <p><a href="{{ unsubscribe_link }}">Unsubscribe</a> | <a href="#">Update Preferences</a></p>
+        </div>
+    </div>
+</body>
+</html>

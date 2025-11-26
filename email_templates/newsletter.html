@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Newsletter</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+        .content {
+            padding: 30px;
+        }
+        .article {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .article:last-child {
+            border-bottom: none;
+        }
+        .article h2 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        .article img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        .read-more {
+            display: inline-block;
+            padding: 10px 25px;
+            background-color: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .footer {
+            background-color: #f8f9fa;
+            padding: 20px 30px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+        }
+        .social-links {
+            margin: 15px 0;
+        }
+        .social-links a {
+            display: inline-block;
+            margin: 0 10px;
+            color: #667eea;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📰 Monthly Newsletter</h1>
+            <p>{{ campaign.scheduled_time|date:"F Y" }}</p>
+        </div>
+        
+        <div class="content">
+            <p>Hi {{ recipient.first_name }},</p>
+            
+            <p>Here's what's new this month!</p>
+            
+            <div class="article">
+                <h2>🚀 New Feature Launch</h2>
+                <p>We're excited to announce our latest feature that will help you work more efficiently. This new tool integrates seamlessly with your existing workflow and provides advanced analytics.</p>
+                <a href="https://yourplatform.com/features" class="read-more">Learn More</a>
+            </div>
+            
+            <div class="article">
+                <h2>💡 Tips & Tricks</h2>
+                <p>Did you know you can save 30% more time by using keyboard shortcuts? Check out our comprehensive guide to master our platform.</p>
+                <a href="https://yourplatform.com/tips" class="read-more">Read Guide</a>
+            </div>
+            
+            <div class="article">
+                <h2>📊 Monthly Stats</h2>
+                <p>This month, our community has grown by 25%! Thank you for being part of our journey. Here are some impressive numbers:</p>
+                <ul>
+                    <li>10,000+ active users</li>
+                    <li>50,000+ tasks completed</li>
+                    <li>95% customer satisfaction</li>
+                </ul>
+            </div>
+            
+            <div class="article">
+                <h2>🎉 Upcoming Events</h2>
+                <p>Join us for our webinar series starting next week. Learn from industry experts and connect with fellow users.</p>
+                <a href="https://yourplatform.com/events" class="read-more">Register Now</a>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p><strong>Stay Connected</strong></p>
+            <div class="social-links">
+                <a href="#">Twitter</a> | 
+                <a href="#">LinkedIn</a> | 
+                <a href="#">Facebook</a>
+            </div>
+            <p>© 2025 Your Platform. All rights reserved.</p>
+            <p>{{ recipient.email }}</p>
+            <p><a href="{{ unsubscribe_link }}">Unsubscribe</a> | <a href="#">Update Preferences</a></p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Special Offer</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .banner {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 50px 30px;
+            text-align: center;
+        }
+        .banner h1 {
+            margin: 0;
+            font-size: 36px;
+            text-transform: uppercase;
+        }
+        .offer-badge {
+            background-color: #ffd700;
+            color: #333;
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 18px;
+            margin: 15px 0;
+        }
+        .content {
+            padding: 40px 30px;
+        }
+        .highlight-box {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .features {
+            list-style: none;
+            padding: 0;
+        }
+        .features li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+        .features li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #28a745;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        .cta-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .urgency {
+            text-align: center;
+            color: #dc3545;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .footer {
+            background-color: #333;
+            color: white;
+            padding: 30px;
+            text-align: center;
+            font-size: 12px;
+        }
+        .footer a {
+            color: #f093fb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="banner">
+            <h1>🎁 SPECIAL OFFER</h1>
+            <div class="offer-badge">50% OFF</div>
+            <p>Exclusive deal for valued customers</p>
+        </div>
+        
+        <div class="content">
+            <p>Dear {{ recipient.first_name }},</p>
+            
+            <p>We have an <strong>exclusive offer</strong> just for you! For a limited time only, enjoy 50% off our premium subscription.</p>
+            
+            <div class="highlight-box">
+                <h3 style="margin-top: 0;">🔥 Why Upgrade Now?</h3>
+                <ul class="features">
+                    <li>Unlimited access to all features</li>
+                    <li>Priority customer support</li>
+                    <li>Advanced analytics and reporting</li>
+                    <li>Custom branding options</li>
+                    <li>API access and integrations</li>
+                    <li>No advertisements</li>
+                </ul>
+            </div>
+            
+            <center>
+                <a href="https://yourplatform.com/upgrade?promo=SPECIAL50" class="cta-button">
+                    Claim Your Discount Now
+                </a>
+            </center>
+            
+            <div class="urgency">
+                ⏰ Offer expires in 48 hours!
+            </div>
+            
+            <p style="margin-top: 30px;">Don't miss out on this incredible opportunity to unlock the full potential of our platform at half the price.</p>
+            
+            <p><strong>Regular Price:</strong> <strike>$99/month</strike><br>
+            <strong>Your Price:</strong> <span style="color: #28a745; font-size: 20px;">$49.50/month</span></p>
+            
+            <p>Questions? Our team is here to help 24/7.</p>
+            
+            <p>Cheers,<br>
+            The Team</p>
+        </div>
+        
+        <div class="footer">
+            <p>© 2025 Your Platform. All rights reserved.</p>
+            <p>Sent to: {{ recipient.email }}</p>
+            <p><a href="{{ unsubscribe_link }}">Unsubscribe</a> | <a href="#">Privacy Policy</a></p>
+        </div>
+    </div>
+</body>
+</html>
