@@ -1,4 +1,4 @@
-# 📧 Campaign Mailer - High-Performance Email Campaign Management System
+# 📧 High-Performance Email Campaign Management System
 
 A production-ready, scalable email campaign management system built with Django, Celery, and Redis. Designed to handle bulk email campaigns with support for 200,000+ recipients per campaign.
 
