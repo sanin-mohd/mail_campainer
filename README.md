@@ -265,15 +265,19 @@ Django Admin
 ### Performance Benchmarks
 
 #### Email Sending Throughput
-```
-Configuration: 4 sender workers, concurrency 2 each, batch size 200
-Rate Limit: 1/s per worker (200 emails per second)
 
-Campaign Size    | Duration      | Throughput
------------------|---------------|------------------
-10,000 emails    | ~25 minutes   | ~400 emails/min
-50,000 emails    | ~2 hours      | ~416 emails/min
-200,000 emails   | ~8-10 hours   | ~400 emails/min
+#### Scaled Flow (4 Workers, concurrency 2):
+```
+Campaign (200k emails)
+    ↓
+start_campaign_send() → Creates 1000 tasks
+    ↓
+4 Workers process tasks in parallel
+    ↓
+Rate: 2 × 4 × 200 = 1600 emails/second (but limited by SendGrid's 600/s)
+Time: 200,000 ÷ 1600 = ~125 seconds = ~2 minutes ⚡
+```
+
 ```
 
 #### Recipient Import Performance
@@ -584,45 +588,85 @@ docker-compose -f docker-compose.prod.yml up -d --scale celery_worker_sender_1=4
 
 ## 📁 Project Structure
 
+## File Structure
+
 ```
 campaign/
-├── campaigns/                      # Main Django app
-│   ├── admin.py                    # Django admin configuration
-│   ├── models.py                   # Campaign, Recipient, DeliveryLog models
-│   ├── views.py                    # Import/export views
-│   ├── forms.py                    # Campaign validation forms
-│   ├── tasks.py                    # Celery tasks
-│   ├── utils.py                    # Helper functions
-│   └── migrations/                 # Database migrations
-│
-├── mailer_project/                 # Django project settings
-│   ├── settings.py                 # Main configuration
-│   ├── urls.py                     # URL routing
-│   └── wsgi.py                     # WSGI entry point
-│
-├── email_templates/                # HTML email templates
+├── campaigns/
+│   ├── migrations/
+│   │   └── __init__.py
+│   ├── templates/
+│   │   └── admin/
+│   │       └── campaigns/
+│   │           └── recipient/
+│   │               ├── bulk_upload.html
+│   │               └── change_list.html
+│   ├── __pycache__/
+│   ├── __init__.py
+│   ├── admin.py
+│   ├── apps.py
+│   ├── forms.py
+│   ├── importer_v1.py
+│   ├── importer_v2.py
+│   ├── models.py
+│   ├── providers.py
+│   ├── tasks.py
+│   ├── tests.py (14 unit tests)
+│   ├── test_runner.py (celebration on success)
+│   ├── utils.py
+│   └── views.py
+├── mailer_project/
+│   ├── __pycache__/
+│   ├── __init__.py
+│   ├── asgi.py
+│   ├── celery.py
+│   ├── settings.py (logging + TEST_RUNNER config)
+│   ├── urls.py
+│   └── wsgi.py
+├── email_templates/
 │   ├── welcome_email.html
-│   ├── flash_sale_email.html
-│   └── newsletter_email.html
-│
-├── docs/                           # Documentation
-│   ├── CAMPAIGN_EXAMPLES_GUIDE.md
-│   ├── RATE_LIMIT_GUIDE.md
-│   ├── SCALABILITY_GUIDE.md
-│   └── FLOWER_MONITORING_GUIDE.md
-│
-├── docker-compose.yml              # Development Docker config
-├── docker-compose.prod.yml         # Production Docker config
-├── Dockerfile                      # Docker image definition
-├── docker-entrypoint.sh            # Container startup script
-│
-├── nginx.conf                      # Nginx configuration
-├── requirements.txt                # Python dependencies
-├── .env.example                    # Environment template
-├── .env.docker                     # Docker environment
-├── manage.py                       # Django management
-└── README.md                       # This file
+│   ├── newsletter.html
+│   ├── promotional.html
+│   ├── event_invitation.html
+│   └── product_update.html
+├── logs/
+│   ├── django.log
+│   ├── celery.log
+│   ├── email.log
+│   └── error.log
+├── docs/
+│   ├── GUIDE1_LOCAL_SETUP.md
+│   ├── GUIDE2_DOCKER_SETUP.md
+│   ├── GUIDE3_BULK_UPLOAD.md
+│   ├── GUIDE4_EMAIL_TEST_SCRIPTS.md
+│   ├── GUIDE5_CAMPAIGN_EXAMPLES.md
+│   ├── GUIDE6_FLOWER_MONITORING.md
+│   
+├── staticfiles/
+├── venv/
+├── .dockerignore
+├── .env
+├── .env.docker
+├── .env.example
+├── .env.production
+├── .gitignore
+├── celerybeat-schedule
+├── celerybeat-schedule.db
+├── docker-compose.yml
+├── docker-compose.prod.yml
+├── docker-entrypoint.sh
+├── Dockerfile
+├── manage.py
+├── nginx.conf
+├── README.md
+├── requirements.txt
+├── sample_recipients.csv
+├── sample_recipients_100k.csv
+├── sample_recipients_100k.xlsx
+├── test_gmail.py
+└── test_sendgrid.py
 ```
+
 
 ---
 
@@ -805,83 +849,8 @@ docker-compose -f docker-compose.prod.yml exec web python manage.py migrate
 docker-compose -f docker-compose.prod.yml exec web python manage.py createsuperuser
 ```
 
-### 4. SSL Certificate (Let's Encrypt)
-
-```bash
-# Install certbot
-sudo apt install certbot python3-certbot-nginx
-
-# Get certificate
-sudo certbot --nginx -d yourdomain.com -d www.yourdomain.com
-
-# Auto-renewal (cron)
-0 0 * * * certbot renew --quiet
-```
-
 ---
 
-## 🔧 Troubleshooting
-
-### Common Issues
-
-#### 1. Redis Connection Refused
-
-**Error:** `Error 111 connecting to 127.0.0.1:6379`
-
-**Solution:**
-```bash
-# Check settings.py
-REDIS_URL = config('REDIS_URL', default='redis://redis:6379/1')
-
-# Restart services
-docker-compose restart web
-```
-
-#### 2. Database Does Not Exist
-
-**Error:** `database "campaign_db_docker" does not exist`
-
-**Solution:**
-```bash
-# The entrypoint script creates it automatically
-docker-compose restart web
-
-# Or create manually
-docker-compose exec db createdb -U postgres campaign_db_docker
-```
-
-#### 3. Migrations Failed
-
-**Error:** `IntegrityError: duplicate key value`
-
-**Solution:**
-```bash
-# Reset database
-docker-compose down -v
-docker-compose up -d
-```
-
-#### 4. Worker Not Visible in Flower
-
-**Solution:**
-```bash
-# Restart workers
-docker-compose restart celery_worker_scheduler celery_worker_sender_1
-
-# Check logs
-docker-compose logs celery_worker_sender_1
-```
-
-#### 5. Static Files Not Loading
-
-**Solution:**
-```bash
-# Collect static files
-docker-compose exec web python manage.py collectstatic --noinput
-
-# Check STATIC_ROOT in settings.py
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-```
 
 ### Health Checks
 
@@ -899,23 +868,23 @@ docker-compose exec web python manage.py dbshell
 docker-compose exec redis redis-cli ping
 ```
 
-# ============================================================================
 # HOW TO RUN TESTS
-# ============================================================================
-#
+```bash
+
+
 # Run all tests:
-#   docker-compose exec web python manage.py test campaigns
+   docker-compose exec web python manage.py test campaigns
 #
 # Run with verbose output:
-#   docker-compose exec web python manage.py test campaigns --verbosity=2
+   docker-compose exec web python manage.py test campaigns --verbosity=2
 #
 # Run specific test class:
-#   docker-compose exec web python manage.py test campaigns.tests.Test1_ScheduledCampaignDetection
+   docker-compose exec web python manage.py test campaigns.tests.Test1_ScheduledCampaignDetection
 #
 # Run specific test method:
-#   docker-compose exec web python manage.py test campaigns.tests.Test1_ScheduledCampaignDetection.test_scheduled_campaign_is_started
+   docker-compose exec web python manage.py test campaigns.tests.Test1_ScheduledCampaignDetection.test_scheduled_campaign_is_started
 #
-# ============================================================================
+``````
 
 ---
 
